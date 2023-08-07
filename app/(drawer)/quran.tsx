@@ -1,17 +1,18 @@
-import { StyleSheet } from "react-native";
-import EditScreenInfo from "@/components/EditScreenInfo";
-import { Text, View } from "@/components/Themed";
+import { StyleSheet, View, ScrollView } from "react-native";
+import Colors from "@/constants/Colors";
+import SurahCard from "@/components/SurahCard";
+import { useDbContext } from "@/contexts/dbContext";
 
-export default function TabOneScreen() {
+export default function QuranScreen() {
+  const { surahList } = useDbContext();
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Quran</Text>
-      <View
-        style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
-      />
-      <EditScreenInfo path="app/(drawer)/index.tsx" />
+      <ScrollView contentContainerStyle={styles.contentStyle}>
+        {surahList.map((surah) => (
+          <SurahCard key={surah.id} surah={surah} />
+        ))}
+      </ScrollView>
     </View>
   );
 }
@@ -19,16 +20,10 @@ export default function TabOneScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: Colors.gray.light,
   },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: "80%",
+  contentStyle: {
+    paddingVertical: "3%",
+    paddingHorizontal: "3%",
   },
 });

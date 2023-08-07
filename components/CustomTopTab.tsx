@@ -17,9 +17,9 @@ const CustomTopTab = ({ headerProps }: PropTypes) => {
 
   const handleNavigate = (route: string) => {
     if (route === "beranda") {
-      router.push("/");
+      router.push("/(drawer)/");
     } else if (route === "al-quran") {
-      router.push("/quran");
+      router.push("/(drawer)/quran");
     }
   };
 
