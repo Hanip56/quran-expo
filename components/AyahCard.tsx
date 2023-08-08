@@ -1,5 +1,11 @@
-import { View, Text, StyleSheet, TouchableHighlight } from "react-native";
-import React, { SetStateAction } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableHighlight,
+  LayoutRectangle,
+} from "react-native";
+import React from "react";
 import { Ayah } from "@/types/global";
 
 type PropTypes = {
@@ -7,6 +13,8 @@ type PropTypes = {
   numberOfAyah: number;
   currentAyah: number;
   setCurrentAyah: React.Dispatch<React.SetStateAction<number>>;
+  elementsRef: number[];
+  setListElements: React.Dispatch<React.SetStateAction<number[]>>;
 };
 
 const AyahCard = ({
@@ -14,6 +22,8 @@ const AyahCard = ({
   numberOfAyah,
   currentAyah,
   setCurrentAyah,
+  elementsRef,
+  setListElements,
 }: PropTypes) => {
   const styles = StyleSheet.create({
     container: {
@@ -21,7 +31,7 @@ const AyahCard = ({
       paddingHorizontal: "6%",
       gap: 8,
       backgroundColor:
-        ayah.ayahId == currentAyah + 1 ? "rgba(8,255,201,.05)" : "white",
+        ayah.ayahId == currentAyah ? "rgba(8,255,201,.05)" : "white",
       marginTop: ayah.ayahId == 1 ? 42 : 0,
       marginBottom: ayah.ayahId == numberOfAyah ? 50 : 0,
     },
@@ -37,7 +47,7 @@ const AyahCard = ({
   });
 
   const handlePress = () => {
-    setCurrentAyah(ayah.ayahId - 1);
+    setCurrentAyah(ayah.ayahId);
   };
 
   return (
@@ -45,6 +55,15 @@ const AyahCard = ({
       underlayColor={"rgba(0,0,0,.1)"}
       onPress={handlePress}
       style={styles.container}
+      onLayout={(e) => {
+        const layout = e.nativeEvent.layout;
+        if (layout) {
+          elementsRef[ayah.ayahId - 1] = layout.y - 42; // 42 here is title label height eg. Al-fatihah
+          if (ayah.ayahId === numberOfAyah) {
+            setListElements(elementsRef);
+          }
+        }
+      }}
     >
       <View>
         <Text style={styles.ayahText}>{ayah.ayahText}</Text>

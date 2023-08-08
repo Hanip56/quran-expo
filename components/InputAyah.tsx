@@ -4,7 +4,12 @@ import * as React from "react";
 import { View, TouchableHighlight, StyleSheet } from "react-native";
 import { Modal, Portal, Text, TextInput } from "react-native-paper";
 
-const InputAyah = () => {
+type PropType = {
+  number_of_ayah: number;
+  setCurrentAyah: React.Dispatch<React.SetStateAction<number>>;
+};
+
+const InputAyah = ({ number_of_ayah, setCurrentAyah }: PropType) => {
   const [visible, setVisible] = React.useState(false);
   const [noAyah, setNoAyah] = React.useState("");
 
@@ -20,7 +25,18 @@ const InputAyah = () => {
   const handleBatal = () => {
     hideModal();
   };
-  const handleOk = () => {};
+  const handleSubmit = () => {
+    const target = parseInt(noAyah);
+    if (target < 1) {
+      setCurrentAyah(1);
+    } else if (target > number_of_ayah) {
+      setCurrentAyah(number_of_ayah);
+    } else {
+      setCurrentAyah(target);
+    }
+    hideModal();
+    setNoAyah("");
+  };
 
   return (
     <View>
@@ -42,6 +58,7 @@ const InputAyah = () => {
               style={styles.contentTextInput}
               value={noAyah}
               onChangeText={handleInput}
+              onSubmitEditing={handleSubmit}
               autoFocus
               activeUnderlineColor="black"
               keyboardType="numeric"
@@ -58,7 +75,7 @@ const InputAyah = () => {
             </TouchableHighlight>
             <TouchableHighlight
               underlayColor={Colors.gray.light}
-              onPress={handleOk}
+              onPress={handleSubmit}
               style={styles.actionButton}
             >
               <Text style={styles.actionButtonText}>OK</Text>

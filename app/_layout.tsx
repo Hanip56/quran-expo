@@ -132,7 +132,8 @@ function RootLayoutNav() {
               name="reading/[id]"
               options={{
                 animation: "fade_from_bottom",
-                header: (props) => <ReadingHeader {...props} />,
+                headerShown: false,
+                // header: (props) => <ReadingHeader {...props} />,
               }}
             />
             <Stack.Screen

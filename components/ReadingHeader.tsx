@@ -1,11 +1,18 @@
 import { StyleSheet, View, TouchableHighlight } from "react-native";
-import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import Colors from "@/constants/Colors";
 import { useRouter } from "expo-router";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import InputAyah from "./InputAyah";
 
-export default function ReadingHeader(props: NativeStackHeaderProps) {
+type PropType = {
+  number_of_ayah: number;
+  setCurrentAyah: React.Dispatch<React.SetStateAction<number>>;
+};
+
+export default function ReadingHeader({
+  number_of_ayah,
+  setCurrentAyah,
+}: PropType) {
   const router = useRouter();
   const handleBack = () => {
     router.back();
@@ -34,7 +41,10 @@ export default function ReadingHeader(props: NativeStackHeaderProps) {
       >
         <MaterialCommunityIcons name="chevron-left" size={32} color="white" />
       </TouchableHighlight>
-      <InputAyah />
+      <InputAyah
+        number_of_ayah={number_of_ayah}
+        setCurrentAyah={setCurrentAyah}
+      />
     </View>
   );
 }
