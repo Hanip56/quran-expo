@@ -1,19 +1,38 @@
 import Colors from "@/constants/Colors";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import * as React from "react";
 import { View, TouchableHighlight, StyleSheet } from "react-native";
 import { ActivityIndicator, Modal, Portal, Text } from "react-native-paper";
+import * as FileSystem from "expo-file-system";
+
+type PropType = {
+  isLoading: boolean;
+  hide: () => void;
+  downloadResumables: React.MutableRefObject<FileSystem.DownloadResumable[]>;
+  setAudioExists: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
 const DownloadIndicator = ({
   isLoading,
   hide,
-}: {
-  isLoading: boolean;
-  hide: () => void;
-}) => {
-  const handleBatal = () => {
-    hide();
+  downloadResumables,
+  setAudioExists,
+}: PropType) => {
+  const cancelAllDownloads = () => {
+    downloadResumables.current.forEach((resumable) => {
+      resumable.cancelAsync();
+    });
   };
+  const handleBatal = () => {
+    setAudioExists(false);
+    hide();
+    cancelAllDownloads();
+  };
+
+  React.useEffect(() => {
+    return () => {
+      handleBatal();
+    };
+  }, []);
 
   return (
     <Portal>
@@ -31,7 +50,7 @@ const DownloadIndicator = ({
             color={Colors.green.light}
           />
         </View>
-        {/* <View style={styles.buttonContainer}>
+        <View style={styles.buttonContainer}>
           <TouchableHighlight
             underlayColor={Colors.gray.light}
             onPress={handleBatal}
@@ -39,7 +58,7 @@ const DownloadIndicator = ({
           >
             <Text style={styles.actionButtonText}>Batal</Text>
           </TouchableHighlight>
-        </View> */}
+        </View>
       </Modal>
     </Portal>
   );

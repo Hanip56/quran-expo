@@ -12,9 +12,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
@@ -31,7 +29,20 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "enableProguardInReleaseBuilds": "true",
+            "enableShrinkResourcesInReleaseBuilds": "true"
+          },
+          "ios": {
+            "deploymentTarget": "13.0",
+            "flipper": true
+          }
+        }
+      ]
     ],
     "experiments": {
       "tsconfigPaths": true,

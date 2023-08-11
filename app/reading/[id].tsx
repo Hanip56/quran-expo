@@ -30,12 +30,16 @@ const Reading = () => {
   const [listElements, setListElements] = useState<number[]>([]);
   const [showNetInfo, setShowNetInfo] = useState(false);
   const [isPlayed, setIsPlayed] = useState(false);
+  const [downloadAC, setDownloadAC] = useState<AbortController>(
+    new AbortController()
+  );
 
   const currentSurah = surahList[parseInt(id.toString()) - 1];
   const name = currentSurah.latin_name;
   const number_of_ayah = currentSurah.number_of_ayah;
 
   const scrollRef = useRef<ScrollView>(null);
+  const downloadResumables = useRef<FileSystem.DownloadResumable[]>([]);
 
   const downloadAudio = async () => {
     if (
@@ -63,20 +67,41 @@ const Reading = () => {
         `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${ayahAudioIndex}.mp3`,
         FileSystem.documentDirectory + `audio/${id}/${ayahId}.mp3`
       );
+    // async function downloadAllAudioSurah() {
+    //   await Promise.all(
+    //     ayahList.map((ayah) =>
+    //       downloadResumable(ayah.ayahId, ayah.id + 1).downloadAsync()
+    //     )
+    //   );
+    // }
     async function downloadAllAudioSurah() {
-      await Promise.all(
-        ayahList.map((ayah) =>
-          downloadResumable(ayah.ayahId, ayah.id + 1).downloadAsync()
-        )
-      );
+      try {
+        await Promise.all(
+          ayahList.map(async (ayah) => {
+            const resumable = downloadResumable(ayah.ayahId, ayah.id + 1);
+            downloadResumables.current.push(resumable);
+            await resumable.downloadAsync();
+          })
+        );
+      } catch (error) {
+        console.log(error);
+      }
     }
 
     try {
       setDownloadLoading(true);
       await downloadAllAudioSurah();
       setDownloadLoading(false);
-      console.log("Download Finished");
-      setAudioExists(true);
+      if (
+        (
+          await FileSystem.getInfoAsync(
+            FileSystem.documentDirectory + `audio/${id}/${number_of_ayah}.mp3`
+          )
+        ).exists
+      ) {
+        console.log("Download Finished");
+        setAudioExists(true);
+      }
     } catch (e) {
       console.error(e);
     }
@@ -96,6 +121,8 @@ const Reading = () => {
       }
     }
   };
+
+  console.log({ audioExists });
 
   const playAudio = async (ayah: number) => {
     try {
@@ -244,6 +271,8 @@ const Reading = () => {
         <DownloadIndicator
           isLoading={downloadLoading}
           hide={() => setDownloadLoading(false)}
+          downloadResumables={downloadResumables}
+          setAudioExists={setAudioExists}
         />
         <TouchableOpacity
           style={styles.titleLabel}
