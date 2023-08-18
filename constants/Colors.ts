@@ -17,6 +17,7 @@ export default {
     tabIconSelected: tintColorDark,
   },
   green: {
+    semitransparent: "rgba(30,164,137,.4)",
     light: "#27ba9a",
     normal: "#1ea489",
     dark: "#0a6b58",
@@ -26,5 +27,13 @@ export default {
     extraLight: "#f5f5f5",
     light: "#c9c9c9",
     normal: "#b7b7b7",
+  },
+  primary: {
+    transparent: "rgba(22,75,114,0.05)",
+    semitransparent: "rgba(22,75,96,0.4)",
+    normal: "#164B60",
+    light: "#1b5c75",
+    semidark: "#2D4356",
+    dark: "#213240",
   },
 };

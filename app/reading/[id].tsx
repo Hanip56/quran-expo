@@ -17,6 +17,9 @@ import NetInfo from "@react-native-community/netinfo";
 import NetInfoToast from "@/components/NetInfoToast";
 import AudioControl from "@/components/AudioControl";
 import ReadingHeader from "@/components/ReadingHeader";
+import { FlatList } from "react-native-gesture-handler";
+import Colors from "@/constants/Colors";
+import LoadingComp from "@/components/LoadingComp";
 
 const Reading = () => {
   const [ayahList, setAyahList] = useState<Ayah[]>([]);
@@ -121,8 +124,6 @@ const Reading = () => {
       }
     }
   };
-
-  console.log({ audioExists });
 
   const playAudio = async (ayah: number) => {
     try {
@@ -250,61 +251,74 @@ const Reading = () => {
 
   const elementsRef: number[] = [];
 
-  if (ayahList.length < 1) {
-    return (
-      <View>
-        <Text>Loading...</Text>
-      </View>
-    );
-  }
+  const isLoading = ayahList.length < 1;
 
   return (
     <>
       <ReadingHeader
         number_of_ayah={number_of_ayah}
         setCurrentAyah={setCurrentAyah}
+        isLoading={isLoading}
       />
-      <View style={styles.container}>
-        {/* Network Indicator */}
-        {showNetInfo && <NetInfoToast />}
-        {/* download indicator */}
-        <DownloadIndicator
-          isLoading={downloadLoading}
-          hide={() => setDownloadLoading(false)}
-          downloadResumables={downloadResumables}
-          setAudioExists={setAudioExists}
-        />
-        <TouchableOpacity
-          style={styles.titleLabel}
-          onPress={() => setShowNetInfo(true)}
-        >
-          <Text style={styles.title}>{name}</Text>
-        </TouchableOpacity>
-        <ScrollView ref={scrollRef}>
-          {ayahList?.map((ayah) => (
+      {!isLoading ? (
+        <View style={styles.container}>
+          {/* Network Indicator */}
+          {showNetInfo && <NetInfoToast />}
+          {/* download indicator */}
+          <DownloadIndicator
+            isLoading={downloadLoading}
+            hide={() => setDownloadLoading(false)}
+            downloadResumables={downloadResumables}
+            setAudioExists={setAudioExists}
+          />
+          <TouchableOpacity
+            style={styles.titleLabel}
+            onPress={() => setShowNetInfo(true)}
+          >
+            <Text style={styles.title}>{name}</Text>
+          </TouchableOpacity>
+          <ScrollView ref={scrollRef}>
+            {ayahList?.map((ayah) => (
+              <AyahCard
+                key={ayah.id}
+                ayah={ayah}
+                numberOfAyah={number_of_ayah}
+                currentAyah={currentAyah}
+                setCurrentAyah={setCurrentAyah}
+                elementsRef={elementsRef}
+                setListElements={setListElements}
+              />
+            ))}
+          </ScrollView>
+          {/* <FlatList
+          data={ayahList}
+          renderItem={({ item }) => (
             <AyahCard
-              key={ayah.id}
-              ayah={ayah}
+              ayah={item}
               numberOfAyah={number_of_ayah}
               currentAyah={currentAyah}
               setCurrentAyah={setCurrentAyah}
               elementsRef={elementsRef}
               setListElements={setListElements}
             />
-          ))}
-        </ScrollView>
-        <AudioControl
-          audioExists={audioExists}
-          currentAyah={currentAyah}
-          handlePlay={handlePlay}
-          handleStop={handleStop}
-          isPlayed={isPlayed}
-          isPlaying={isPlaying}
-          number_of_ayah={number_of_ayah}
-          pauseAudio={pauseAudio}
-          setCurrentAyah={setCurrentAyah}
-        />
-      </View>
+          )}
+          keyExtractor={(item) => item.id.toString()}
+        /> */}
+          <AudioControl
+            audioExists={audioExists}
+            currentAyah={currentAyah}
+            handlePlay={handlePlay}
+            handleStop={handleStop}
+            isPlayed={isPlayed}
+            isPlaying={isPlaying}
+            number_of_ayah={number_of_ayah}
+            pauseAudio={pauseAudio}
+            setCurrentAyah={setCurrentAyah}
+          />
+        </View>
+      ) : (
+        <LoadingComp />
+      )}
     </>
   );
 };
@@ -321,7 +335,7 @@ const styles = StyleSheet.create({
     height: 42,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(30,164,137,.4)",
+    backgroundColor: Colors.primary.semitransparent,
   },
   title: {
     textAlign: "center",

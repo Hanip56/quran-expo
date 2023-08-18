@@ -7,11 +7,13 @@ import InputAyah from "./InputAyah";
 type PropType = {
   number_of_ayah: number;
   setCurrentAyah: React.Dispatch<React.SetStateAction<number>>;
+  isLoading: boolean;
 };
 
 export default function ReadingHeader({
   number_of_ayah,
   setCurrentAyah,
+  isLoading,
 }: PropType) {
   const router = useRouter();
   const handleBack = () => {
@@ -21,7 +23,7 @@ export default function ReadingHeader({
   return (
     <View
       style={{
-        backgroundColor: Colors.green.normal,
+        backgroundColor: Colors.primary.normal,
         paddingTop: 24,
         paddingHorizontal: 8,
         height: 80,
@@ -38,12 +40,14 @@ export default function ReadingHeader({
         }}
         underlayColor="rgba(255,255,255,.1)"
         onPress={handleBack}
+        disabled={isLoading}
       >
         <MaterialCommunityIcons name="chevron-left" size={32} color="white" />
       </TouchableHighlight>
       <InputAyah
         number_of_ayah={number_of_ayah}
         setCurrentAyah={setCurrentAyah}
+        isLoading={isLoading}
       />
     </View>
   );

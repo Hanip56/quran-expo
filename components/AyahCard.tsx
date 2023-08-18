@@ -7,6 +7,7 @@ import {
 } from "react-native";
 import React from "react";
 import { Ayah } from "@/types/global";
+import Colors from "@/constants/Colors";
 
 type PropTypes = {
   ayah: Ayah;
@@ -31,7 +32,7 @@ const AyahCard = ({
       paddingHorizontal: "6%",
       gap: 8,
       backgroundColor:
-        ayah.ayahId == currentAyah ? "rgba(8,255,201,.05)" : "white",
+        ayah.ayahId == currentAyah ? Colors.primary.transparent : "white",
       marginTop: ayah.ayahId == 1 ? 42 : 0,
       marginBottom: ayah.ayahId == numberOfAyah ? 50 : 0,
     },
@@ -40,7 +41,9 @@ const AyahCard = ({
       lineHeight: 32,
       marginBottom: 16,
     },
-    ayahReadText: {},
+    ayahReadText: {
+      marginBottom: 8,
+    },
     indoText: {
       lineHeight: 18,
     },

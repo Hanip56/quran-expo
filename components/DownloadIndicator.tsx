@@ -1,7 +1,12 @@
 import Colors from "@/constants/Colors";
 import * as React from "react";
-import { View, TouchableHighlight, StyleSheet } from "react-native";
-import { ActivityIndicator, Modal, Portal, Text } from "react-native-paper";
+import {
+  View,
+  TouchableHighlight,
+  StyleSheet,
+  ActivityIndicator,
+} from "react-native";
+import { Modal, Portal, Text } from "react-native-paper";
 import * as FileSystem from "expo-file-system";
 
 type PropType = {
@@ -47,7 +52,7 @@ const DownloadIndicator = ({
           <ActivityIndicator
             size="large"
             animating={true}
-            color={Colors.green.light}
+            color={Colors.primary.light}
           />
         </View>
         <View style={styles.buttonContainer}>
@@ -80,7 +85,7 @@ const styles = StyleSheet.create({
   },
   button: { padding: 6, borderRadius: 24, marginHorizontal: 4 },
   titleContainer: {
-    backgroundColor: Colors.green.light,
+    backgroundColor: Colors.primary.light,
     padding: 12,
     alignItems: "center",
   },
@@ -112,6 +117,6 @@ const styles = StyleSheet.create({
   actionButtonText: {
     fontSize: 16,
     fontWeight: "700",
-    color: Colors.green.light,
+    color: Colors.primary.light,
   },
 });

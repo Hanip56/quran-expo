@@ -20,6 +20,7 @@ import { Surah } from "@/types/global";
 import ReadingHeader from "@/components/ReadingHeader";
 import { StatusBar } from "expo-status-bar";
 import { Provider } from "react-native-paper";
+import Colors from "@/constants/Colors";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -50,13 +51,13 @@ export default function RootLayout() {
 
   const connectDB = async () => {
     const directory = FileSystem.documentDirectory + "SQLite";
-    const dbName = "quran_idn.db";
+    const dbName = "quran_idn_0.db";
 
     if (!(await FileSystem.getInfoAsync(directory)).exists) {
       await FileSystem.makeDirectoryAsync(directory);
     }
     await FileSystem.downloadAsync(
-      Asset.fromModule(require("../assets/db/quran_idn.db")).uri,
+      Asset.fromModule(require("../assets/db/quran_idn_0.db")).uri,
       directory + "/" + dbName
     );
     const db = SQLite.openDatabase(dbName);
@@ -114,6 +115,9 @@ function RootLayoutNav() {
               name="(drawer)"
               options={{
                 headerShown: true,
+                headerTitle: "My Quran",
+                headerStyle: { backgroundColor: Colors.primary.normal },
+                headerTitleStyle: { color: "white", fontWeight: "bold" },
                 headerLeft: (props) => (
                   <TouchableOpacity
                     style={{ paddingRight: 16 }}
@@ -122,7 +126,7 @@ function RootLayoutNav() {
                     <MaterialCommunityIcons
                       name="menu"
                       size={24}
-                      color="black"
+                      color="white"
                     />
                   </TouchableOpacity>
                 ),

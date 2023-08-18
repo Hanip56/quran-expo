@@ -34,12 +34,8 @@
         "expo-build-properties",
         {
           "android": {
-            "enableProguardInReleaseBuilds": "true",
-            "enableShrinkResourcesInReleaseBuilds": "true"
-          },
-          "ios": {
-            "deploymentTarget": "13.0",
-            "flipper": true
+            "enableProguardInReleaseBuilds": true,
+            "enableShrinkResourcesInReleaseBuilds": true
           }
         }
       ]

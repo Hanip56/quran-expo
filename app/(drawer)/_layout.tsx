@@ -10,10 +10,21 @@ export default function TabLayout() {
 
   return (
     <Drawer
+      // drawerContent={() => (
+      //   <View>
+      //     <Text>Hello</Text>
+      //   </View>
+      // )}
       screenOptions={{
         swipeEnabled: true,
         headerShown: true,
         header: (props) => <CustomTopTab headerProps={props} />,
+        drawerStyle: { backgroundColor: Colors.primary.semidark },
+        drawerItemStyle: {
+          backgroundColor: Colors.primary.dark,
+          borderRadius: 0,
+        },
+        drawerLabelStyle: { color: "white" },
       }}
     >
       <Drawer.Screen

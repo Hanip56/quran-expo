@@ -32,10 +32,10 @@ const CustomTopTab = ({ headerProps }: PropTypes) => {
             styles.tab,
             {
               backgroundColor:
-                tabState === tab ? Colors.green.dark : Colors.green.light,
+                tabState === tab ? Colors.primary.dark : Colors.primary.light,
             },
           ]}
-          underlayColor={Colors.green.semiDark}
+          underlayColor={Colors.primary.semidark}
           onPress={() => handleNavigate(tab)}
         >
           <Text style={styles.tabText}>{tab}</Text>

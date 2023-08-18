@@ -7,9 +7,10 @@ import { Modal, Portal, Text, TextInput } from "react-native-paper";
 type PropType = {
   number_of_ayah: number;
   setCurrentAyah: React.Dispatch<React.SetStateAction<number>>;
+  isLoading: boolean;
 };
 
-const InputAyah = ({ number_of_ayah, setCurrentAyah }: PropType) => {
+const InputAyah = ({ number_of_ayah, setCurrentAyah, isLoading }: PropType) => {
   const [visible, setVisible] = React.useState(false);
   const [noAyah, setNoAyah] = React.useState("");
 
@@ -52,7 +53,7 @@ const InputAyah = ({ number_of_ayah, setCurrentAyah }: PropType) => {
           </View>
           <View style={styles.contentContainer}>
             <Text style={styles.contentText}>
-              Masukan nomor ayat diantara 1 - 7
+              Masukan nomor ayat diantara 1 - {number_of_ayah}
             </Text>
             <TextInput
               style={styles.contentTextInput}
@@ -87,6 +88,7 @@ const InputAyah = ({ number_of_ayah, setCurrentAyah }: PropType) => {
         underlayColor="rgba(255,255,255,.1)"
         onPress={showModal}
         style={styles.button}
+        disabled={isLoading}
       >
         <MaterialCommunityIcons
           name="arrow-u-left-bottom-bold"
@@ -114,7 +116,7 @@ const styles = StyleSheet.create({
   },
   button: { padding: 6, borderRadius: 24, marginHorizontal: 4 },
   titleContainer: {
-    backgroundColor: Colors.green.light,
+    backgroundColor: Colors.primary.light,
     padding: 12,
     alignItems: "center",
   },
@@ -146,6 +148,6 @@ const styles = StyleSheet.create({
   actionButtonText: {
     fontSize: 16,
     fontWeight: "700",
-    color: Colors.green.light,
+    color: Colors.primary.light,
   },
 });
